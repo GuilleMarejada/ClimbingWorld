@@ -15,26 +15,26 @@ const { title } = Astro.props;
       src="https://www.googletagmanager.com/gtag/js?id=G-9L7RVN4SN5"></script>
 
     <script>
-      document.addEventListener("astro:page-load", () => {
-        // Verificar si gtag ya está definido
-        window.dataLayer = window.dataLayer || [];
-        window.gtag =
-          window.gtag ||
-          function gtag(...args) {
-            window.dataLayer.push(args);
-          };
+      if (typeof window !== "undefined") {
+        document.addEventListener("astro:page-load", () => {
+          window.dataLayer = window.dataLayer || [];
+          window.gtag =
+            window.gtag ||
+            function gtag(...args) {
+              window.dataLayer.push(args);
+            };
 
-        // Configuración de Google Analytics
-        window.gtag("js", new Date());
-        window.gtag("config", "G-9L7RVN4SN5");
-      });
+          window.gtag("js", new Date());
+          window.gtag("config", "G-9L7RVN4SN5");
+        });
+      }
     </script>
 
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
+    <meta name="generator" content="Astro" />
     <title>{title}</title>
   </head>
   <body>
