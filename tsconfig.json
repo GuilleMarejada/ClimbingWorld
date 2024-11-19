@@ -6,8 +6,10 @@
     "baseUrl": ".",
     "paths": {
       "@image/*": ["src/image/*"]
-    }
+    },
+    "types": ["astro/client"],
+    "strict": true,
+    "skipLibCheck": true
   },
-  
-    "include": ["src/**/*", "globals.d.ts"]
+  "include": ["src/**/*", "globals.d.ts"]
 }
