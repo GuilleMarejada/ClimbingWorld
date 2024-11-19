@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import type { PostgrestError } from '@supabase/supabase-js'; // Importación solo de tipo
+import type { PostgrestError } from '@supabase/supabase-js';
 
-// Define la interfaz para los datos que esperas obtener
-interface DataItem {
-  id: number;
-  nombre_columna: string; // Cambia esto por el nombre de las columnas de tu tabla
+interface Coordinate {
+  x: number;
+  y: number;
 }
 
-const supabaseUrl = 'https://xianiljacvbxxkofuidy.supabase.co'; // Cambia por tu URL de Supabase
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpYW5pbGphY3ZieHhrb2Z1aWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzMjQ3MzYsImV4cCI6MjA0NjkwMDczNn0.yY5lj_zCN1F09zf7yLIAq5g_ErefogEbnhhxgR412S4'; // Usa tu clave pública o de servicio
+interface DataItem {
+  id: number;
+  name: string;
+  ruta: Coordinate[];
+}
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const SupabaseData: React.FC = () => {
-  const [data, setData] = useState<DataItem[]>([]); // Usa el tipo de datos definido
+  const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,17 +29,14 @@ const SupabaseData: React.FC = () => {
           .from('image1') // Cambia por el nombre de tu tabla
           .select('*');
 
-        if (error) {
-          throw error;
-        }
-
+        if (error) throw error;
         if (data) {
           setData(data);
           console.log(data);
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
-          setError(err.message);
+          setError(`Error: ${err.message}`);
         }
       } finally {
         setLoading(false);
@@ -45,12 +47,21 @@ const SupabaseData: React.FC = () => {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <ul>
       {data.map((item) => (
-        <li key={item.id}>{item.nombre_columna}</li> // Cambia por el nombre de una columna
+        <li key={item.id}>
+          <p>{item.name}</p>
+          <ul>
+            {item.ruta.map((coord, index) => (
+              <li key={index}>
+                x: {coord.x} / y: {coord.y}
+              </li>
+            ))}
+          </ul>
+        </li>
       ))}
     </ul>
   );

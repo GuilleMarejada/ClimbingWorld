@@ -9,6 +9,26 @@ const { title } = Astro.props;
 <!doctype html>
 <html lang="es">
   <head>
+    <script
+      is:inline
+      src="https://www.googletagmanager.com/gtag/js?id=G-9L7RVN4SN5"></script>
+
+    <script>
+      declare global {
+        interface Window {
+          dataLayer: unknown[];
+          gtag: (...args: unknown[]) => void;
+        }
+      }
+      document.addEventListener("astro:page-load", () => {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function gtag(...args: any[]) {
+          window.dataLayer.push(arguments);
+        };
+        window.gtag("js", new Date());
+        window.gtag("config", "G-9L7RVN4SN5");
+      });
+    </script>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
