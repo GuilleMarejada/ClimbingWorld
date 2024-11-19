@@ -15,21 +15,21 @@ const { title } = Astro.props;
       src="https://www.googletagmanager.com/gtag/js?id=G-9L7RVN4SN5"></script>
 
     <script>
-      declare global {
-        interface Window {
-          dataLayer: unknown[];
-          gtag: (...args: unknown[]) => void;
-        }
-      }
       document.addEventListener("astro:page-load", () => {
+        // Verificar si gtag ya está definido
         window.dataLayer = window.dataLayer || [];
-        window.gtag = function gtag(...args: any[]) {
-          window.dataLayer.push(arguments);
-        };
+        window.gtag =
+          window.gtag ||
+          function gtag(...args) {
+            window.dataLayer.push(args);
+          };
+
+        // Configuración de Google Analytics
         window.gtag("js", new Date());
         window.gtag("config", "G-9L7RVN4SN5");
       });
     </script>
+
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />

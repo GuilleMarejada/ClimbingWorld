@@ -7,5 +7,7 @@
     "paths": {
       "@image/*": ["src/image/*"]
     }
-  }
+  },
+  
+    "include": ["src/**/*", "globals.d.ts"]
 }
